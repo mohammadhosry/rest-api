@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,7 +16,10 @@ export class UsersService {
     }
 
     async findOne(id): Promise<User> {
-        return this.usersRepository.findOne(id);
+        return this.usersRepository.findOneOrFail(id)
+            .catch(() => {
+                throw new NotFoundException();
+            });
     }
 
     async store(body): Promise<User> {
