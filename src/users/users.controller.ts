@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
+import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 
@@ -11,8 +13,14 @@ export class UsersController {
         return this.usersService.findAll();
     }
 
+    @Get(':id')
+    async findOne(@Param('id') id: BigInteger): Promise<User> {
+        return this.usersService.findOne(id);
+    }
+
+    @ApiOperation({ summary: 'Create user' })
     @Post()
-    async store(@Body() body): Promise<User> {
+    async store(@Body() body: CreateUserDto): Promise<User> {
         return this.usersService.store(body);
     }
 }

@@ -15,6 +15,10 @@ export class UsersService {
         return this.usersRepository.find();
     }
 
+    async findOne(id): Promise<User> {
+        return this.usersRepository.findOne(id);
+    }
+
     async store(body): Promise<User> {
         return this.usersRepository.save({
             ...body,
